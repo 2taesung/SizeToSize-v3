@@ -1,0 +1,19 @@
+# gitignore
+## if not operate: git rm -r --cached .
+
+### Django ###
+__pycache__/
+db.sqlite3
+media
+
+### macOS ###
+# General
+.DS_Store
+.AppleDouble
+.LSOverride
+
+### secret setting ###
+my_settings.py
+
+### vscode setting ###
+.vscode
