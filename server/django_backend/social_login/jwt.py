@@ -1,23 +1,22 @@
-from django_API import my_settings
 from django.http import JsonResponse
-from .models import User
+from social_login.models import User
+from django_API.my_settings import JWT_SETTING
 import jwt
 import datetime
 
-def jwt_publish(social_id, social_token):
+def jwt_publish(social_id):
     jwt_expiration = datetime.datetime.utcnow() + datetime.timedelta(seconds=60*60*6)
-    access_jwt = jwt.encode({'exp': jwt_expiration, 'social_id': social_id}, my_settings.JWT_AUTH['JWT_SECRET_KEY']+social_token, algorithm=my_settings.JWT_AUTH['JWT_ALGORITHM'])
-    access_jwt = access_jwt.decode('utf-8')
+    access_jwt = jwt.encode({'exp': jwt_expiration, 'social_id': social_id}, key=JWT_SETTING['JWT_SECRET_KEY'], algorithm=JWT_SETTING['JWT_ALGORITHM'])
     return access_jwt
 
 def jwt_authorization(func):
     def wrapper(self, request, *args, **kwargs):
         try:
             # access_token
-            try:
-                access_token = request.headers['Token']
-            except KeyError:
-                return JsonResponse({'message': 'HEADERS JWT TOKEN KEY ERROR'}, status=400)
+            # try:
+            #     access_token = request.headers['Token']
+            # except KeyError:
+            #     return JsonResponse({'message': 'HEADERS JWT TOKEN KEY ERROR'}, status=400)
             # access_jwt
             try:
                 Authorization = request.headers['Authorization']
@@ -28,7 +27,7 @@ def jwt_authorization(func):
             except:
                 return JsonResponse({'message': 'JWT AUTHORIZATION INVALID FORM ERROR'}, status=400)
             # decode
-            payload = jwt.decode(access_jwt, my_settings.JWT_AUTH['JWT_SECRET_KEY']+access_token, algorithm=my_settings.JWT_AUTH['JWT_ALGORITHM'])
+            payload = jwt.decode(access_jwt, key=JWT_SETTING['JWT_SECRET_KEY'], algorithms=JWT_SETTING['JWT_ALGORITHM'])
             login_user = User.objects.get(kakao_id=payload['social_id'])
             request.user = login_user
             return func(self, request, *args, **kwargs)

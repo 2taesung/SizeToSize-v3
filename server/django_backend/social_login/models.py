@@ -37,11 +37,12 @@ class User(AbstractBaseUser, PermissionsMixin):
     is_superuser = models.BooleanField(default=False)
     # custom
     user_pk = models.AutoField(primary_key=True)
+    foot_size = models.IntegerField(null=True, blank=True)
     ## kakao
     kakao_id = models.IntegerField(unique=True, null=True, blank=True)
     kakao_nickname = models.CharField(max_length=40, null=True, blank=True)
     ## naver
-    #naver_id = None
+    pass
     # setting
     USERNAME_FIELD = None
     if kakao_id:
@@ -50,7 +51,7 @@ class User(AbstractBaseUser, PermissionsMixin):
     objects = UserManager()
     
     def __str__(self):
-        return str(self.User_pk)
+        return str(self.user_pk)
     
     class Meta:
         db_table = 'User'

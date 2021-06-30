@@ -14,11 +14,30 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 from django.contrib import admin
-from django.urls import path
-from social_login import logins
+from django.urls import path, include
+from social_login import logins, tests
+from shoe_size import views
+from .settings import DEBUG
+import debug_toolbar
 
 urlpatterns = [
     path('admin', admin.site.urls),
     # login
-    path('accounts/login', logins.SocialLogin, name='Login'),
+    path('accounts/login/kakao', logins.kakao_login, name='kakao_login'),
+    # OwnShoes
+    path('ownshoes/list', views.OwnShoesListAPIView.as_view(), name='ownshoes_list'),
+    path('ownshoes/create', views.OwnShoesCreateAPIView.as_view(), name='ownshoes_create'),
+    path('ownshoes/update', views.OwnShoesUpdateAPIView.as_view(), name='ownshoes_update'),
+    path('ownshoes/delete', views.OwnShoesDeleteAPIView.as_view(), name='ownshoes_delete'),
 ]
+
+# Dev
+if DEBUG == True:
+    dev = [
+        # kakao login test
+        path('accounts/login/kakao/test', tests.kakao_login_test, name='kakao_login_test'),
+        path('accounts/login/kakao/callback/test', tests.kakao_callback_test, name='kakao_callback_test'),
+        # django-debug-toolbar
+        path('__debug__/', include(debug_toolbar.urls)),
+    ]
+    urlpatterns += dev

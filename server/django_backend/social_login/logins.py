@@ -11,7 +11,7 @@ import requests
 
 @csrf_exempt
 @require_http_methods(['GET'])
-def kakao_login(self):
+def kakao_login(request):
     # access_token
     try:
         access_token = request.headers['Token']
@@ -29,7 +29,7 @@ def kakao_login(self):
         return JsonResponse({'message': 'KAKAO API PROFILE KEY ERROR'}, status=400)
     # User, access_jwt
     User_search = User.objects.filter(kakao_id=kakao_id)
-    access_jwt = jwt_publish(kakao_id, access_token)
+    access_jwt = jwt_publish(kakao_id)
     if User_search:
         pass
     else:

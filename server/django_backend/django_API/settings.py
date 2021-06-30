@@ -12,6 +12,7 @@ https://docs.djangoproject.com/en/3.2/ref/settings/
 
 from pathlib import Path
 from .my_settings import KEY, WHITELIST
+import os
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -28,6 +29,8 @@ DEBUG = True
 
 ALLOWED_HOSTS = ['127.0.0.1', 'localhost', 'localhost:8000']
 
+# django-debug-toolbar
+INTERNAL_IPS = ['127.0.0.1']
 
 # Application definition
 
@@ -41,6 +44,10 @@ INSTALLED_APPS = [
     # my app
     'social_login',
     'shoe_size',
+    # django-debug-toolbar
+    'debug_toolbar',
+    # djangorestframework
+    'rest_framework',
 ]
 
 MIDDLEWARE = [
@@ -53,6 +60,8 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     # cors
     'corsheaders.middleware.CorsMiddleware',
+    # django-debug-toolbar
+    'debug_toolbar.middleware.DebugToolbarMiddleware',
 ]
 
 ROOT_URLCONF = 'django_API.urls'
@@ -134,6 +143,27 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 # django auth user model
 AUTH_USER_MODEL = 'social_login.User'
 
+# REST_FRAMEWORK
+REST_FRAMEWORK = {
+    'DEFAULT_PERMISSION_CLASSES': (
+        'rest_framework.permissions.IsAuthenticated',
+    ),
+    'DEFAULT_AUTHENTICATION_CLASSES': [
+        'rest_framework.authentication.BasicAuthentication',
+        'rest_framework.authentication.SessionAuthentication',
+        #'rest_framework_jwt.authentication.JSONWebTokenAuthentication',
+    ],
+    'DEFAULT_PARSER_CLASSES': (
+        'rest_framework.parsers.FormParser',
+        'rest_framework.parsers.JSONParser',
+        'rest_framework.parsers.MultiPartParser',
+    ),
+    'DEFAULT_RENDERER_CLASSES': (
+        'rest_framework.renderers.JSONRenderer',
+        'rest_framework.renderers.BrowsableAPIRenderer',
+    )
+}
+
 # cors setting
 CORS_ORIGIN_ALLOW_ALL = False
 CORS_ALLOW_CREDENTIALS = True
@@ -159,7 +189,7 @@ CORS_ALLOW_HEADERS = [
 'x-csrftoken',
 'x-requested-with',
 'Access-Control-Allow-Origin',
-'Token',
+'token',
 ]
 
 CSRF_COOKIE_SAMESITE = None

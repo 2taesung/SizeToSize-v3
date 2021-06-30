@@ -6,9 +6,10 @@ name = "pypi"
 [packages]
 django = "*"
 requests = "*"
-pyjwt = "*"
+pyjwt = "==2.0.1"
 djangorestframework = "*"
 django-cors-headers = "*"
+django-debug-toolbar = "*"
 
 [dev-packages]
 
