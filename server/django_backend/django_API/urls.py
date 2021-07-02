@@ -27,8 +27,8 @@ urlpatterns = [
     # OwnShoes
     path('ownshoes/list', views.OwnShoesListAPIView.as_view(), name='ownshoes_list'),
     path('ownshoes/create', views.OwnShoesCreateAPIView.as_view(), name='ownshoes_create'),
-    path('ownshoes/update', views.OwnShoesUpdateAPIView.as_view(), name='ownshoes_update'),
-    path('ownshoes/delete', views.OwnShoesDeleteAPIView.as_view(), name='ownshoes_delete'),
+    path('ownshoes/update/<id>', views.OwnShoesUpdateAPIView.as_view(), name='ownshoes_update'),
+    path('ownshoes/delete/<id>', views.OwnShoesDeleteAPIView.as_view(), name='ownshoes_delete'),
 ]
 
 # Dev
