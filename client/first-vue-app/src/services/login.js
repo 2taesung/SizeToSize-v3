@@ -26,6 +26,13 @@ const getKakaoToken = async (code) => {
         // const result = await axios.post(`https://kauth.kakao.com/oauth/token?grant_type=authorization_code&client_id=${data.client_id}&redirect_uri=${data.redirect_uri}&code=${data.code}`);
         console.log('카카오 토큰', queryString);
         console.log(result)
+
+        const token_header = {
+            'Token': result.data.access_token
+        }
+
+        const server_token = await axios.get(`http://127.0.0.1:8000/accounts/login/kakao`, { headers: token_header });
+        console.log(server_token)
         return result;
     } catch (e) {
         return e;
