@@ -52,7 +52,7 @@ class OwnShoesListAPIView(ListAPIView):
         for m in OwnShoes_obj:
             serializer = self.serializer_class(m)
             datas.append(serializer.data)
-        return JsonResponse({'count': len(OwnShoes_obj), 'list': datas}, status=200)
+        return JsonResponse({'message': 'OWNSHOES LISTING SUCCESS', 'count': len(OwnShoes_obj), 'data': datas}, status=200)
 
 # OwnShoes Create
 class OwnShoesCreateAPIView(CreateAPIView):
