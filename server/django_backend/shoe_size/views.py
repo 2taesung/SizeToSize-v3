@@ -61,7 +61,7 @@ class OwnShoesCreateAPIView(CreateAPIView):
     serializer_class = OwnShoesSerializer
     
     @csrf_exempt
-    #@jwt_authorization
+    @jwt_authorization
     def post(self, request, *args, **kwargs):
         #request.data['user_pk'] = int(str(request.user))
         self.create(request, *args, **kwargs)
@@ -74,9 +74,9 @@ class OwnShoesUpdateAPIView(UpdateAPIView): # MultipleFieldLookupMixin,
     serializer_class = OwnShoesSerializer
     
     @csrf_exempt
-    #@jwt_authorization
+    @jwt_authorization
     def put(self, request, *args, **kwargs):
-        #request.data['user_pk'] = int(str(request.user))
+        request.data['user_pk'] = int(str(request.user))
         self.update(request, *args, **kwargs)
         return JsonResponse({'message': 'OWNSHOES UPDATE SUCCESS'}, status=201)
 
@@ -87,8 +87,8 @@ class OwnShoesDeleteAPIView(DestroyAPIView): # MultipleFieldLookupMixin,
     serializer_class = OwnShoesSerializer
     
     @csrf_exempt
-    #@jwt_authorization
+    @jwt_authorization
     def delete(self, request, *args, **kwargs):
-        #request.data['user_pk'] = int(str(request.user))
+        request.data['user_pk'] = int(str(request.user))
         self.destroy(request, *args, **kwargs)
         return JsonResponse({'message': 'OWNSHOES DELETION SUCCESS'}, status=201)
