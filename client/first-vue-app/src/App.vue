@@ -1,9 +1,6 @@
-
-
 <template>
   <div id="app">
     <div id="nav">
-      
       <router-link to="/signup">signup</router-link>
     </div>
     <img src="@/assets/logo.png" alt="">
