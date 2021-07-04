@@ -16,7 +16,7 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path, include
 from social_login import logins, tests
-from shoe_size import views
+from shoe_size import views, scrapings
 from .settings import DEBUG
 import debug_toolbar
 
@@ -39,5 +39,7 @@ if DEBUG == True:
         path('accounts/login/kakao/callback/test', tests.kakao_callback_test, name='kakao_callback_test'),
         # django-debug-toolbar
         path('__debug__/', include(debug_toolbar.urls)),
+        # scraing
+        path('scrapings', scrapings.get_data),
     ]
     urlpatterns += dev

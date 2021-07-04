@@ -3,7 +3,7 @@ from django.http import JsonResponse, HttpResponse
 from rest_framework.generics import ListAPIView, CreateAPIView, UpdateAPIView, DestroyAPIView
 from rest_framework.permissions import AllowAny
 from rest_framework.response import Response
-from .models import OwnShoes
+from .models import OwnShoes, ShoesDataset
 from .serializers import OwnShoesSerializer
 from django.views.decorators.csrf import csrf_exempt
 from social_login.jwt import jwt_authorization
@@ -63,11 +63,11 @@ class OwnShoesCreateAPIView(CreateAPIView):
     @csrf_exempt
     @jwt_authorization
     def post(self, request, *args, **kwargs):
-        #request.data['user_pk'] = int(str(request.user))
+        request.data['user_pk'] = int(str(request.user))
         self.create(request, *args, **kwargs)
         return JsonResponse({'message': 'OWNSHOES CREATION SUCCESS'}, status=201)
 
-class OwnShoesUpdateAPIView(UpdateAPIView): # MultipleFieldLookupMixin,
+class OwnShoesUpdateAPIView(UpdateAPIView):
     permission_classes = [AllowAny]
     lookup_field = 'id'
     queryset = OwnShoes.objects.all()
@@ -80,7 +80,7 @@ class OwnShoesUpdateAPIView(UpdateAPIView): # MultipleFieldLookupMixin,
         self.update(request, *args, **kwargs)
         return JsonResponse({'message': 'OWNSHOES UPDATE SUCCESS'}, status=201)
 
-class OwnShoesDeleteAPIView(DestroyAPIView): # MultipleFieldLookupMixin,
+class OwnShoesDeleteAPIView(DestroyAPIView):
     permission_classes = [AllowAny]
     lookup_field = 'id'
     queryset = OwnShoes.objects.all()
