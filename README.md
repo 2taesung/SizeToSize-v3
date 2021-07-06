@@ -20,7 +20,12 @@
 
 ## 2. 개발 과정
 
+### Component 설계
+
+
+### 서버 api 약속
+https://www.notion.so/55a1e7b2e8494feebb59229e74821b55?v=8f5417e3b9db492bac02959d8724eef4
+
 ### 카카오소셜로그인(21.07.03)
 
 https://velog.io/@2taesung/Vue.js-kakaologin
-
