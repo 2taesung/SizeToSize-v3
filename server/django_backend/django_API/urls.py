@@ -40,6 +40,6 @@ if DEBUG == True:
         # django-debug-toolbar
         path('__debug__/', include(debug_toolbar.urls)),
         # scraing
-        path('scrapings', scrapings.get_data),
+        path('scrapings', scrapings.get_review_data, name='review_data_scraping'),
     ]
     urlpatterns += dev
