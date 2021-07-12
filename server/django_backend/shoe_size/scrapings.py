@@ -118,7 +118,8 @@ def get_review_data(request):
                                     break
                                 comment_review_elem = comment_review_elem.replace('\n', ' ')
                             reviewer_hash[str(model_elem)][str(reviewer_elem)]['comment_review'] = str(comment_review_elem)
-                            except_words = ['아빠', '엄마', '형', '누나', '오빠', '언니', '동생', '친척', '삼촌', '이모', '조카', '가족', '친구', '사이즈업', '사이즈다운', '사이즈 업', '사이즈 다운']
+                            except_words = ['아빠', '엄마', '형', '누나', '오빠', '언니', '동생', '친척', '삼촌', '이모', '조카', '가족', '친구', '업', '다운']
+                            # 업 다운 처리
                             if str(comment_review_elem) in except_words:
                                 continue
                         except:
@@ -132,23 +133,32 @@ def get_review_data(request):
                                 expected_foot_size_elem = int(size_elem)
                             if str(size_review_elem) == '작아요':
                                 expected_foot_size_elem = int(size_elem) - 5
+                            if str(ball_review_elem) == '넓어요':
+                                expected_foot_size_elem += 5
+                            if str(ball_review_elem) == '보통이에요':
+                                pass
+                            if str(ball_review_elem) == '좁아요':
+                                expected_foot_size_elem -= 5
                             size_ratio = int(size_elem)/int(expected_foot_size_elem)
                             reviewer_hash[str(model_elem)][str(reviewer_elem)]['size_ratio'] = float(size_ratio)
                             try:
                                 size_standard = None
-                                if int(size_elem)>= 240 and int(size_elem) <= 310:
+                                if int(size_elem)>= 200 and int(size_elem) <= 310:
                                     size_standard = 'KR'
                             except:
                                 pass
                             print("id: ", str(reviewer_elem))
-                            Reviewer.objects.create(reviewer_id=str(reviewer_elem))
-                            print("success")
-                            reviewer_pk = Reviewer.objects.filter(reviewer_id=str(reviewer_elem))[0]
-                            print("pk: ", reviewer_pk)
-                            reviewer_pk = int(reviewer_pk)
-                            print("reviewer_pk: ", reviewer_pk)
-                            ShoesDataset.objects.create(reviewer_pk=reviewer_pk, foot_size=int(expected_foot_size_elem), brand=brand, model_name=str(model_elem), shoe_size=int(size_elem), size_standard=size_standard, size_ratio=float(size_ratio))
-                            print("create!")
+                            reviewer_memory = []
+                            if reviewer_elem != None:
+                                reviewer_memory.append(str(reviewer_elem))
+                                reviewer_node = reviewer_memory.pop(0)
+                            if len(Reviewer.objects.filter(reviewer_id=reviewer_node)) == 0:
+                                Reviewer.objects.create(reviewer_id=reviewer_node)
+                                print("Reviewer create success")
+                            reviewer = Reviewer.objects.get(reviewer_id=reviewer_node)
+                            ShoesDataset.objects.create(reviewer_pk=reviewer, foot_size=int(expected_foot_size_elem), brand=brand, model_name=str(model_elem), shoe_size=int(size_elem), size_standard=size_standard, size_ratio=float(size_ratio))
+                            print("ShoesDataset create!")
+                            reviewer_elem = None
                         except:
                             pass
     driver.close()

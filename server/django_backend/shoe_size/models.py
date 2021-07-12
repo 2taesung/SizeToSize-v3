@@ -19,6 +19,8 @@ class OwnShoes(models.Model):
 class Reviewer(models.Model):
     reviewer_pk = models.AutoField(primary_key=True)
     reviewer_id = models.CharField(max_length=255, unique=True)
+    class Meta:
+        db_table = 'Reviewer'
 
 class ShoesDataset(models.Model):
     id = models.AutoField(primary_key=True)
